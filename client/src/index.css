@@ -26,6 +26,16 @@
   align-items: center;
 }
 
+.modalpo {
+  height: fit-content;
+
+  margin: auto;
+  padding: 0 2rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .orange-gradient {
   background: var(--gradient);
 }
@@ -130,4 +140,73 @@
   100% {
     background-position: 180px;
   }
+}
+
+.checkboxcontainer {
+  cursor: pointer;
+}
+
+.checkboxcontainer input {
+  display: none;
+}
+
+.checkboxcontainer svg {
+  overflow: visible;
+}
+
+.path {
+  fill: none;
+  stroke: #ab70e6;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
+  stroke-dasharray: 241 9999999;
+  stroke-dashoffset: 0;
+}
+
+.checkboxcontainer input:checked ~ svg .path {
+  stroke-dasharray: 70.5096664428711 9999999;
+  stroke-dashoffset: -262.2723388671875;
+}
+
+.custum-file-upload {
+  height: 40px;
+  width: 100%;
+  display: flex;
+  align-items: space-between;
+  gap: 20px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed black;
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+}
+
+.custum-file-upload .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custum-file-upload .icon svg {
+  height: 30px;
+  fill: black;
+}
+
+.custum-file-upload .text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custum-file-upload .text span {
+  font-weight: 400;
+  color: black;
+}
+
+.custum-file-upload input {
+  display: none;
 }

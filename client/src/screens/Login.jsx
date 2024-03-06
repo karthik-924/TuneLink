@@ -5,16 +5,17 @@ import MusicBackground from "../assets/MusicBackground.jpg";
 import Button from "../components/Button";
 import { motion, AnimatePresence } from "framer-motion";
 import Modal from "../components/Modal";
+import Background from "../assets/Background.gif";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: "",
+    username: "",
     password: "",
   });
-  const [error, setError] = useState("");
+  const [err, setErr] = useState("");
 
   const navigate = useNavigate();
-  const setToken = useAuth();
+  const { setToken, setUserData} = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
 
   const close = () => setModalOpen(false);
@@ -30,55 +31,54 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (
-      !formData.username ||
-      !formData.email ||
-      !formData.password ||
-      !formData.confirmPassword
-    ) {
-      setError("All fields are required");
-      return;
-    }
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-    if (!formData.termsChecked) {
-      setError("Please accept the terms and conditions");
+    if (!formData.username || !formData.password) {
+      setErr("All fields are required");
       return;
     }
 
-    fetch("/Login", {
+    fetch("http://localhost:5000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         username: formData.username,
-        email: formData.email,
         password: formData.password,
       }),
     })
       .then((res) => {
         if (res.ok) {
           return res.json();
+        } else if (res.status === 401) {
+          return res.json().then((data) => Promise.reject(data.message));
         } else {
-          throw new Error("Login failed");
+          setErr("Login failed")
         }
       })
       .then((data) => {
+        console.log("Login successful:", data);
         setToken(data.token);
-        navigate("/login");
+        setUserData({
+          username: formData.username,
+        })
+        navigate("/posts");
       })
-      .catch((error) => {
-        setError("Login failed. Please try again.");
+      .catch((err) => {
+        setErr(err);
       });
   };
 
   return (
-      <div className="max-w-[100vw] min-h-screen flex gap-5 flex-col font-roboto justify-center items-center bg-[#f3ebff]">
-          <p className="text-[#e973ed] font-bold text-4xl btn-shine">TUNE<span className="text-[#ab70e6]">LINK</span></p>
-      <div className="w-[60%] h-[70vh] bg-white flex">
+    <div
+      style={{
+        background: "url(src/assets/Background.gif)",
+      }}
+      className="max-w-[100vw] min-h-screen flex gap-5 flex-col font-roboto justify-center items-center bg-no-repeat bg-cover"
+    >
+      <p className="text-[#e973ed] font-bold text-4xl btn-shine">
+        TUNE<span className="text-[#ab70e6]">LINK</span>
+      </p>
+      <div className="w-[60%] h-[70vh] bg-gray-200 flex">
         <div className="w-[50%] flex justify-center items-center flex-col h-full">
           <div className="w-[80%] gap-10 flex flex-col">
             <p className="text-[#ab70e6] font-bold text-xl">Login</p>
@@ -86,14 +86,14 @@ const Login = () => {
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               <div className="flex flex-col">
                 <label htmlFor="email" className="text-gray-500">
-                  Email:
+                  Username:
                 </label>
                 <input
-                  type="email"
-                  id="email"
-                  name="email"
+                  type="text"
+                  id="username"
+                  name="username"
                   className="border-2 border-gray-300 rounded-md p-2"
-                  value={formData.email}
+                  value={formData.username}
                   onChange={handleChange}
                 />
               </div>
@@ -131,9 +131,9 @@ const Login = () => {
                   </a>
                 </p>
               </div>
-              {error && (
-                <div className="error flex justify-center items-center text-red-500 text-sm">
-                  {error}
+              {err && (
+                <div className="err flex justify-center items-center text-red-500 text-sm">
+                  {err}
                 </div>
               )}
             </form>

@@ -4,10 +4,18 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [token, setToken_] = useState(localStorage.getItem("token"));
-
+  const [userData, setUserData_] = useState(localStorage.getItem("TuneLinkUser"))
+  console.log(localStorage.getItem("TuneLinkUser"))
   const setToken = (newToken) => {
     setToken_(newToken);
   };
+
+  const setUserData = (newUser) => {
+    console.log(newUser)
+    localStorage.setItem("TuneLinkUser",newUser)
+    setUserData_(newUser);
+  }
+
 
   useEffect(() => {
     if (token) {
@@ -15,7 +23,8 @@ const AuthProvider = ({ children }) => {
     } else {
       localStorage.removeItem('token')
     }
-  }, [token]);
+    
+  }, [token,userData]);
 
   const fetchWithToken = async (url, options = {}) => {
     if (token) {
@@ -39,6 +48,8 @@ const AuthProvider = ({ children }) => {
       token,
       setToken,
       fetchWithToken,
+      setUserData,
+      userData
     }),
     [token]
   );
