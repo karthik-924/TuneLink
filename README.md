@@ -26,5 +26,5 @@ To get started with TuneLink, follow these steps:
     ```bash
     npm start
 
-**Contributing**
+## **Contributing**
 We welcome contributions from the community! If you have any ideas for new features, bug fixes, or improvements, feel free to open an issue or submit a pull request.
