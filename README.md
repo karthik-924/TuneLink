@@ -18,11 +18,13 @@ To get started with TuneLink, follow these steps:
    git clone https://github.com/yourusername/tunelink.git
 
 
-Install dependencies:
+2. **Install dependencies:**
+    ```bash
+    npm install
 
-npm install
-Run the application:
+3. **Run the application:**
+    ```bash
+    npm start
 
-npm start
-Contributing
+**Contributing**
 We welcome contributions from the community! If you have any ideas for new features, bug fixes, or improvements, feel free to open an issue or submit a pull request.
